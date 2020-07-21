@@ -17,8 +17,8 @@ def configure(context):
 def impute_education_locations_same_zone( df_ag, hts_trips, df_candidates, df_travel, age_min, age_max, age_group, name):
     hts_educ = hts_trips.copy()
     hts_educ = hts_educ[hts_educ["age_class_hts"] == age_group]
-    hts_educ_cp = hts_educ[hts_educ["mode"]=="car_passenger"]
-    hts_educ_ncp = hts_educ[hts_educ["mode"]!="car_passenger"]
+    hts_educ_cp = hts_educ[(hts_educ["mode"]=="car_passenger") | (hts_educ["mode"]=="car") | (hts_educ["mode"]=="pt")]
+    hts_educ_ncp = hts_educ[~((hts_educ["mode"]=="car_passenger") | (hts_educ["mode"]=="car") | (hts_educ["mode"]=="pt"))]
 
     dist_educ_cp = hts_educ_cp#["crowfly_distance"]
     hist_cp, bins_cp = np.histogram(dist_educ_cp["crowfly_distance"], weights = dist_educ_cp["weight"], bins = 500)
@@ -125,6 +125,7 @@ def execute(context):
     df_candidates = df_education_locations.copy()
 
     df_hts_trips = context.stage("data.hts.cleaned")[1]
+    
     df_hts_persons = context.stage("data.hts.cleaned")[0]
     df_hts = pd.merge(df_hts_trips, df_hts_persons, on=["person_id"])
     hts_trips_educ = df_hts[df_hts["purpose"]=="education"]
@@ -143,17 +144,14 @@ def execute(context):
     
     df_candidates = df_education_locations.copy()
     df_candidates = df_candidates[(df_candidates["type"]=='ELEM') | (df_candidates["type"]=='PS') | (df_candidates["type"]=='ELEMHIGH')]
-    #educ_0_10 = impute_education_locations_same_zone(df_agents, hts_trips_educ, df_candidates, df_trips, 0,  10, 1, "/nas/balacm/educ016.png")
     educ_0_10 = parallelize_dataframe(hts_trips_educ, df_agents, df_candidates, df_trips, 0,  10, 1, "/nas/balacm/educ016.png", impute_education_locations_same_zone, 24)
 
     df_candidates = df_education_locations.copy()
     df_candidates = df_candidates[(df_candidates["type"]=='ELEMHIGH') | (df_candidates["type"]=='HS') | (df_candidates["type"]=='INTMIDJR')]
-    #educ_11_18 = impute_education_locations_same_zone(df_agents, hts_trips_educ, df_candidates, df_trips, 10,  18, 1, "/nas/balacm/educ016.png")
     educ_11_18 = parallelize_dataframe(hts_trips_educ, df_agents, df_candidates, df_trips, 10,  18, 1, "/nas/balacm/educ016.png", impute_education_locations_same_zone, 24)
 
     df_candidates = df_education_locations.copy()
     df_candidates = df_candidates[(df_candidates["type"]=='college')]
-    #educ_19_100 = impute_education_locations_same_zone(df_agents, hts_trips_educ, df_candidates, df_trips, 18,  100, 2, "/nas/balacm/educ016.png")
     educ_19_100 = parallelize_dataframe(hts_trips_educ, df_agents, df_candidates, df_trips, 18,  100, 2, "/nas/balacm/educ16100.png",impute_education_locations_same_zone, 24)
 
     education_locations = pd.concat([educ_0_10, educ_11_18, educ_19_100])   

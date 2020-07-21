@@ -1,8 +1,8 @@
-## Synthetic population pipeline for Sao-Paulo
+## Synthetic population pipeline for California
 ## based on the synpp package
 
 # This is the path to a directory where the pipeline can store temporary data
-working_directory: /nas/balacm/California/cache
+working_directory: /nas/balacm/California/cache_sd
 
 # This section defines which parts of the pipeline should be run
 run:
@@ -10,23 +10,26 @@ run:
   #- data.census.cleaned
   #- data.osm.add_pt_variable
   #- data.education.education_facilities
-  #- data.hts.cleaned
-  #- data.od.cleaned
+  - data.hts.cleaned
+  #- data.od.raw
   #- synthesis.population.sampled
-  #-  synthesis.population.matching
+  #- synthesis.population.matching
   #- synthesis.population.trips
   #- synthesis.population.spatial.by_person.primary_zones
-  #- synthesis.population.spatial.by_person.primary_locations
+  #- synthesis.population.spatial.by_person.primary_locations_education
   #- synthesis.population.spatial.by_person.secondary.locations
-  - synthesis.output # To create the output population in the output_path (see below)
-  - synthesis.population.spatial.locations
-  #- synthesis.population.activities
+  #- synthesis.output # To create the output population in the output_path (see below)
+  #- synthesis.population.spatial.locations
+  #- synthesis.population.sociodemographics
   #- matsim.scenario.population
   #- matsim.scenario.supply.processed
-  #- matsim.scenario.supply.osm
+  #- synthesis.population.spatial.by_person.secondary.distance_distributions
+  #- synthesis.destinations
+  #- matsim.simulation.run
+  #- matsim.scenario.supply.gtfs
   #- matsim.runtime.eqasim
   #- matsim.output # Uncomment, if you want to run the full simulation (you'll need Java for that)
-
+  #- analysis.analysis
 # Here the configuraiton of the pipeline starts
 config:
   # Some general configuration
@@ -36,9 +39,19 @@ config:
   sampling_rate: 0.01
   random_seed: 1234
 
+  # define regions to be synthesized
+  counties: [73.0]
+  #county_names: ["Alameda","Contra Costa","Marin","Napa","San Francisco","San Mateo","Santa Clara","Solano","Sonoma"]
+  county_names: ["San Diego"]
+  #zones: ['001', '075', '085', '081', '095', '097', '013', '041', '055']
+  zones: ['073']
+  minimum_source_samples: 2
   # Paths to the input data and where the output should be stored
-  data_path: /nas/balacm/California/Data
-  output_path: /nas/balacm/California/output
+  data_path: /nas/balacm/California/Data/SD
+  output_path: /nas/balacm/California/output/SD
 
   # Only interesting if you run the simulation
-  java_memory: 80G
+  java_memory: 100G
+
+  # Only interesting if the analysis script is run
+  analysis_path: /nas/balacm/California/Analysis/SD

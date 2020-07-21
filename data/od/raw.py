@@ -7,12 +7,15 @@ import itertools
 def configure(context):
     context.stage("data.spatial.zones")
     context.config("data_path")
+    context.config("counties")
+    context.config("county_names")
 
 def execute(context):
     CityDict = {
     "Name":"San Francisco",
     "States":["CA"],
-    "CA":["Alameda","Contra Costa","Marin","Napa","San Francisco","San Mateo","Santa Clara","Solano","Sonoma"]}
+    #"CA":["San Diego"]}
+    "CA": context.config("county_names")}
     StateDict = {    
     'CA':'California'}
     

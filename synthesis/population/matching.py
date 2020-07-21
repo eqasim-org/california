@@ -8,6 +8,8 @@ def configure(context):
     context.stage("synthesis.population.sampled")
     context.stage("data.hts.cleaned")
     context.config("processes")
+    context.config("minimum_source_samples")
+    context.config("counties")
 
 def execute(context):
     df_hts = context.stage("data.hts.cleaned")[0]
@@ -44,6 +46,9 @@ def execute(context):
     #df_source["household_size_class"] = np.digitize(df_source["household_size"], HOUSEHOLD_SIZE_BOUNDARIES, right = True)
 
     NUMBER_OF_VEHICLES_BOUNDARIES = [1, 2, np.inf]
+    if (len(context.config("counties")) < 3):
+        NUMBER_OF_VEHICLES_BOUNDARIES = [1, np.inf]
+    
     df_target["number_of_vehicles_class"] = np.digitize(df_target["number_of_vehicles"], NUMBER_OF_VEHICLES_BOUNDARIES, right = False)
     df_source["number_of_vehicles_class"] = np.digitize(df_source["number_of_vehicles"], NUMBER_OF_VEHICLES_BOUNDARIES, right = False)
 
@@ -70,19 +75,17 @@ def execute(context):
     #df_source["car_availability_class"] = df_source["has_car_trip"]
     
     df_source = df_source[["person_id", "age_class_hts", "sex", "number_of_vehicles_class", "employment", "weight", "sf_home", "pt_accessible"]]
-    #print(df_source)
-    #print(df_target[df_target["sf_home"]==1])
-    #exit()
+    
     synthesis.population.algo.hot_deck_matching.run(
         df_target, "person_id",
         df_source, "person_id",
         "weight",
         #["age_class", "sex", "binary_car_availability"], #, "married"], MARRIED only available for ENTD, not EGT ?
         #["employment", "income_class"], #["household_size_class", "zone_au_simple", "income_class_simple", "number_of_vehicles_class"],
-        ["age_class_hts", "sex", "employment","number_of_vehicles_class"],["pt_accessible", "sf_home"], #, "married"], MARRIED only available for ENTD, not EGT ?
+        ["age_class_hts", "sex", "employment"],["number_of_vehicles_class", "pt_accessible"], #, "married"], MARRIED only available for ENTD, not EGT ?
         #["employment"], ["household_size_class", "zone_au_simple", "income_class_simple", "number_of_vehicles_class"],
         runners = number_of_threads,
-        minimum_source_samples = 4 # MINIMUM_SOURCE_SAMPLES
+        minimum_source_samples = context.config("minimum_source_samples") # MINIMUM_SOURCE_SAMPLES
     )
 
     # Remove and track unmatchable persons

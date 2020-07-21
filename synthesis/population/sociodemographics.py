@@ -19,7 +19,7 @@ def execute(context):
         "person_id", "household_id",
         "age", "sex", "employment", "number_of_vehicles",
         "census_person_id", "household_size",
-        "zone_id", "income"
+        "zone_id", "income", "sf_home"
     ]]
 
     df_hts = df_hts[[
@@ -64,5 +64,5 @@ def execute(context):
     df_persons.loc[df_persons["number_of_bikes"] < df_persons["household_size"], "bike_availability"] = "some"
     df_persons.loc[df_persons["number_of_bikes"] == 0, "bike_availability"] = "none"
     df_persons["bike_availability"] = df_persons["bike_availability"].astype("category")
-
+    
     return df_persons

@@ -19,6 +19,7 @@ def execute(context):
     df_opportunities["location_id"] = np.arange(len(df_opportunities))
     df_opportunities["offers_work"] =  df_opportunities["purpose"].str.contains("work") | df_opportunities["purpose"].str.contains("education")    
     df_opportunities["offers_other"] = True
+    df_opportunities["offers_business"] = True
     df_opportunities["offers_leisure"] = df_opportunities["purpose"].str.contains("leisure")
     df_opportunities["offers_shop"] = df_opportunities["purpose"].str.contains("shop")
     df_opportunities["offers_education"] = df_opportunities["purpose"].str.contains("education")
@@ -42,6 +43,7 @@ def execute(context):
     df_centroids["offers_work"] = False
     df_centroids["offers_education"] = False
     df_centroids["offers_other"] = False
+    df_centroids["offers_business"] = False
     df_centroids["offers_leisure"] = False
     df_centroids["offers_shop"] = False
     df_centroids["offers_home"] = True
@@ -58,6 +60,7 @@ def execute(context):
     df_centroids["offers_work"] = True
     df_centroids["offers_education"] = False
     df_centroids["offers_other"] = False
+    df_centroids["offers_business"] = False
     df_centroids["offers_leisure"] = False
     df_centroids["offers_shop"] = False
     df_centroids["offers_home"] = False

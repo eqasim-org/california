@@ -33,8 +33,8 @@ def execute(context):
     pt_zones = gpd.sjoin(df_stops, df_zones, op = "within").groupby("zone_id").size().reset_index(name = "nstops")
     df_zones = pd.merge(df_zones, pt_zones, how = "left")
     df_zones["nstops"] = df_zones["nstops"].fillna(0).astype(np.int)
-    df_zones["ptdensity"] = df_zones["nstops"] / (df_zones.geometry.area/1000.0/1000.0)
-    has_pt_threshold = 4
+    df_zones["ptdensity"] = df_zones["nstops"] / (df_zones.geometry.area/3280.0/3280.0)
+    has_pt_threshold = 2
 
     df_zones["pt_accessible"] = (df_zones["ptdensity"] > has_pt_threshold).astype(np.int)
     df_zone_pt_accessibility = df_zones[["zone_id", "pt_accessible"]].copy()

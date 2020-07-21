@@ -40,16 +40,14 @@ def prepare_destinations(context):
     df_destinations.rename(columns = {"location_id": "destination_id"}, inplace = True)
 
     identifiers = df_destinations["destination_id"].values
-    print(df_destinations)
     gdf = gpd.GeoDataFrame(
     df_destinations, geometry=gpd.points_from_xy(df_destinations.x, df_destinations.y))
     locations = np.vstack(df_destinations["geometry"].apply(lambda x: np.array([x.x, x.y])).values)
 
     data = {}
 
-    for purpose in ("shop", "leisure", "other"):
+    for purpose in ("shop", "leisure", "other", "business"):
         f = df_destinations["offers_%s" % purpose].values
-
         data[purpose] = dict(
             identifiers = identifiers[f],
             locations = locations[f]
@@ -88,7 +86,7 @@ def execute(context):
 
     # Resampling for calibration
     resample_distributions(distance_distributions, dict(
-        car = 0.5, car_passenger = 0.5, pt = 0.5, walk = 0.2, bike = 0.0
+        car = 0.3, car_passenger = 0.3, pt = 0.3, walk = 0.1, bike = 0.0
     ))
 
     # Segment into subsamples
@@ -155,8 +153,8 @@ def process(context, arguments):
 
   # Set up assignment solver
   thresholds = dict(
-    car = 200.0, car_passenger = 200.0, pt = 200.0,
-    bike = 100.0, walk = 100.0, taxi = 200.0
+    car = 400.0, car_passenger = 400.0, pt = 400.0,
+    bike = 250.0, walk = 200.0, taxi = 300.0
   )
 
   assignment_objective = DiscretizationErrorObjective(thresholds = thresholds)
@@ -165,7 +163,7 @@ def process(context, arguments):
       relaxation_solver = relaxation_solver,
       discretization_solver = discretization_solver,
       objective = assignment_objective,
-      maximum_iterations = 20
+      maximum_iterations = 50
       )
 
   df_locations = []
@@ -192,7 +190,7 @@ def process(context, arguments):
           context.progress.update()
 
   df_locations = pd.DataFrame.from_records(df_locations, columns = ["person_id", "trip_index", "destination_id", "geometry"])
-  df_locations = gpd.GeoDataFrame(df_locations, crs = dict(init = "epsg:29183"))
+  df_locations = gpd.GeoDataFrame(df_locations, crs = dict(init = "epsg:2227"))
 
   df_convergence = pd.DataFrame.from_records(df_convergence, columns = ["valid", "size"])
   return df_locations, df_convergence
