@@ -108,6 +108,21 @@ def plot_comparison_hist_purpose(context, title, actual_df, synthetic_df, bins =
     fig.tight_layout()
     plt.savefig("%s/" % context.config("analysis_path") + title)
 
+def plot_comparison_hist_single_purpose(context, title, actual_df, synthetic_df, purpose, bins = np.linspace(0,25,120), dpi = 100):
+    plt.rcParams['figure.dpi'] = dpi
+    fig, axes = plt.subplots()
+    x = synthetic_df[synthetic_df["destination_purpose"]==purpose]["crowfly_distance"]
+    y = actual_df[actual_df["destination_purpose"]==purpose][["crowfly_distance", "weight_person"]]
+    lab = ["Synthetic", "HTS"]
+    axes.hist(x, bins, alpha=0.5, label=lab[0], density=True)
+    axes.hist(y["crowfly_distance"], bins, weights=y["weight_person"], alpha=0.5, label=lab[1], density=True)
+    
+    axes.set_ylabel("Percentage")
+    axes.set_xlabel("Crowfly Distance [km]")
+    axes.set_title("Business Activity")
+    axes.legend(loc="best")
+    fig.tight_layout()
+    plt.savefig("%s/" % context.config("analysis_path") + title)
 
 
 def plot_comparison_hist_mode(context, title, actual_df, synthetic_df, bins = np.linspace(0,25,120), dpi = 100, cols = 3, rows = 2):
@@ -133,11 +148,14 @@ def plot_comparison_hist_mode(context, title, actual_df, synthetic_df, bins = np
 
 def plot_comparison_cdf_purpose(context, title, actual_df, synthetic_df, dpi = 100, cols = 3, rows = 2):
     modelist = synthetic_df["destination_purpose"].unique()
+    
     plt.rcParams['figure.dpi'] = dpi
     fig, axes = plt.subplots(nrows=rows, ncols=cols)
     idx=0
     for r in range(rows):
         for c in range(cols):
+            if (modelist[idx]=='home'):
+                idx = idx + 1                
             x = synthetic_df[synthetic_df["destination_purpose"]==modelist[idx]]["crowfly_distance"]
             y = actual_df[actual_df["destination_purpose"]==modelist[idx]][["crowfly_distance", "weight_person"]]
             axes = add_small_cdf(axes, r, c, modelist[idx], x, y)

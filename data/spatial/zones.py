@@ -6,9 +6,10 @@ from sklearn.neighbors import KDTree
 def configure(context):
     context.config("data_path")
     context.config("zones")
+    context.config("spatial_file")
 
 def execute(context):
-    df_zones = gpd.read_file("%s/Spatial/SanDiego.shp" % context.config("data_path"))
+    df_zones = gpd.read_file("%s/Spatial/%s" % (context.config("data_path"), context.config("spatial_file")))
     #df_zones = gpd.read_file("%s/Spatial/SanDiego.shp" % context.config("data_path"))
     df_zones.crs = {"init" : "EPSG:4326"}
     

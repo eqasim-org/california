@@ -2,7 +2,7 @@
 ## based on the synpp package
 
 # This is the path to a directory where the pipeline can store temporary data
-working_directory: /nas/balacm/California/cache_sd
+working_directory: /nas/balacm/California/cache_sf
 
 # This section defines which parts of the pipeline should be run
 run:
@@ -10,7 +10,7 @@ run:
   #- data.census.cleaned
   #- data.osm.add_pt_variable
   #- data.education.education_facilities
-  - data.hts.cleaned
+  #- data.hts.cleaned
   #- data.od.raw
   #- synthesis.population.sampled
   #- synthesis.population.matching
@@ -27,7 +27,7 @@ run:
   #- synthesis.destinations
   #- matsim.simulation.run
   #- matsim.scenario.supply.gtfs
-  #- matsim.runtime.eqasim
+  - matsim.runtime.eqasim
   #- matsim.output # Uncomment, if you want to run the full simulation (you'll need Java for that)
   #- analysis.analysis
 # Here the configuraiton of the pipeline starts
@@ -40,15 +40,18 @@ config:
   random_seed: 1234
 
   # define regions to be synthesized
-  counties: [73.0]
-  #county_names: ["Alameda","Contra Costa","Marin","Napa","San Francisco","San Mateo","Santa Clara","Solano","Sonoma"]
-  county_names: ["San Diego"]
-  #zones: ['001', '075', '085', '081', '095', '097', '013', '041', '055']
-  zones: ['073']
-  minimum_source_samples: 2
+  counties: [1.0, 13.0, 41.0, 55.0, 75.0, 81.0, 85.0, 95.0, 97.0]
+  #counties: [73.0]
+  county_names: ["Alameda","Contra Costa","Marin","Napa","San Francisco","San Mateo","Santa Clara","Solano","Sonoma"]
+  #county_names: ["San Diego"]
+  zones: ['001', '075', '085', '081', '095', '097', '013', '041', '055']
+  #zones: ['073']
+  minimum_source_samples: 4
+  spatial_file: "SF_Bay_Area_cleaned.shp"
+  osm_file: "sf_bay.osm.pbf"
   # Paths to the input data and where the output should be stored
-  data_path: /nas/balacm/California/Data/SD
-  output_path: /nas/balacm/California/output/SD
+  data_path: /nas/balacm/California/Data/SF
+  output_path: /nas/balacm/California/output/SF
 
   # Only interesting if you run the simulation
   java_memory: 100G

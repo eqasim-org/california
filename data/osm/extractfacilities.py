@@ -7,7 +7,8 @@ wkbfab = osm.geom.WKBFactory()
 import numpy as np
 
 def configure(context):
-    context.config("data_path")    
+    context.config("data_path")
+    context.config("osm_file")    
     
 class OSMHandler(osm.SimpleHandler):
     def __init__(self):
@@ -47,7 +48,7 @@ def execute(context):
 
     osmhandler = OSMHandler()
     # scan the input file and fills the handler list accordingly
-    osmhandler.apply_file("%s/osm/san_diego.osm.pbf" % context.config("data_path"), locations=True)
+    osmhandler.apply_file("%s/osm/%s" % (context.config("data_path"),context.config("osm_file")), locations=True)
 
     # transform the list into a pandas DataFrame
     data_colnames = ['type', 'id', 'tagkey', 'tagvalue', 'x', 'y']

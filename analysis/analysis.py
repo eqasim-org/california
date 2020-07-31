@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 def configure(context):
     context.stage("data.hts.cleaned")
+    context.stage("synthesis.output")
     context.config("output_path")
     context.config("data_path")
     context.config("analysis_path")
@@ -355,13 +356,17 @@ def all_the_plot_distances(context, df_act_dist, df_syn_dist, suffix = None):
         dmh_title += "_" + suffix
         dpc_title += "_" + suffix
         dmc_title += "_" + suffix
-        
+    b = "Business"    
+    if suffix:
+        b += "_" + suffix    
     dph_title += ".png"
     dph_title += ".png"
     dpc_title += ".png"
     dmc_title += ".png"
     
     myplottools.plot_comparison_hist_purpose(context, dph_title, df_act_dist, df_syn_dist, bins = np.linspace(0,25,120), dpi = 300, cols = 3, rows = 2)
+    myplottools.plot_comparison_hist_single_purpose(context, b, df_act_dist, df_syn_dist, bins = np.linspace(0,25,120), dpi = 300, purpose="business")
+
     myplottools.plot_comparison_hist_mode(context, dmh_title, df_act_dist, df_syn_dist, bins = np.linspace(0,25,120), dpi = 300, cols = 3, rows = 2)
 
     myplottools.plot_comparison_cdf_purpose(context, dpc_title, df_act_dist, df_syn_dist, dpi = 300, cols = 3, rows = 2)
