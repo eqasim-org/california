@@ -29,7 +29,7 @@ def execute(context):
     # Clone repository and checkout version
     git.run(context, [
         "clone", "https://github.com/eqasim-org/eqasim-java.git",
-        "--branch", "develop",
+        "--branch", "newMNLSF",
         "--single-branch", "eqasim-java",
         "--depth", "1"
     ])
