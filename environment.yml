@@ -21,3 +21,4 @@ dependencies:
     - pyreadstat==0.3.4 
     - simpledbf==0.2.6
     - osmium==3.0.0
+    - censusdata==1.10

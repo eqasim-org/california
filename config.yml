@@ -2,7 +2,7 @@
 ## based on the synpp package
 
 # This is the path to a directory where the pipeline can store temporary data
-working_directory: /nas/balacm/California/cache_sf
+working_directory: /nas/balacm/California/cache_sd_new
 
 # This section defines which parts of the pipeline should be run
 run:
@@ -27,7 +27,9 @@ run:
   #- synthesis.destinations
   #- matsim.simulation.run
   #- matsim.scenario.supply.gtfs
-  - matsim.runtime.eqasim
+  #- matsim.runtime.eqasim
+  #- temp.cleaned
+  - data.census.popgen_prepare
   #- matsim.output # Uncomment, if you want to run the full simulation (you'll need Java for that)
   #- analysis.analysis
 # Here the configuraiton of the pipeline starts
@@ -52,6 +54,7 @@ config:
   # Paths to the input data and where the output should be stored
   data_path: /nas/balacm/California/Data/SF
   output_path: /nas/balacm/California/output/SF
+  popgen_input_path: /nas/balacm/California/Data/SD/PopGen
 
   # Only interesting if you run the simulation
   java_memory: 100G
