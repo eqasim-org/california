@@ -28,10 +28,7 @@ def Insert_row(row_number, df, row_value):
     return df  	
 	
 def execute(context):
-    #Counties=["San Francisco", "San Mateo", "Alameda", "Solano", "Sonoma"]#,
-    #Counties = ["Santa Clara", "Contra Costa", "Marin", "Napa"]
-    Counties = ["San Diego"]
-    #Counties = ["Orange", "Riverside", "Ventura", "San Bernardino"]
+    Counties = context.stage("county_names")
     #scale factor for the population
     scale = 1
     OutputFolder = context.config("popgen_input_path")
