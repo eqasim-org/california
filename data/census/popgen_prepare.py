@@ -11,6 +11,7 @@ import os
 
 def configure(context):
 	context.config("popgen_input_path")
+	context.config("county_names")
 	
 # Function to insert row in the dataframe 
 def Insert_row(row_number, df, row_value): 
@@ -26,9 +27,109 @@ def Insert_row(row_number, df, row_value):
     df.loc[row_number] = row_value 
     df = df.sort_index() 
     return df  	
+    
+def create_configuration_file(context, regions):
 	
+    content = """
+project:
+ name: california
+ location: 
+ inputs:
+  entities: [household, person]
+  housing_entities: [household]
+  person_entities: [person]
+  column_names:
+   hid: hid
+   pid: pid
+   geo: geo
+   region: region
+   sample_geo: sample_geo
+  location:
+   geo_corr_mapping:
+    geo_to_sample: geo_sample_mapping.csv
+    region_to_sample: region_sample_mapping.csv
+    region_to_geo: region_geo_mapping.csv
+   sample:
+    household: household_sample_income.csv
+    person: person_sample_age.csv
+   marginals:
+    region:
+     household: household_region_marginals.csv
+     person: person_marginals_complete.csv
+    geo:
+     household: household_marginals_complete.csv
+     person: person_marginals_age.csv
+ scenario:
+  - description: la
+    control_variables:
+     region:
+      person: []
+      household: [rhhlvehic]
+     geo:
+      person: [pgender,page,pemploy]
+      household: [hhltype,hhlincome]
+    parameters:
+     ipf:
+      tolerance: 0.0001
+      iterations: 250
+      zero_marginal_correction: 0.00001
+      rounding_procedure: bucket
+      archive_performance_frequency: 1
+     reweighting:
+      procedure: ipu
+      tolerance: 0.0001
+      inner_iterations: 1
+      outer_iterations: 100
+      archive_performance_frequency: 1
+     draws:
+      pvalue_tolerance: 0.9999
+      iterations: 50
+      seed: 0
+    geos_to_synthesize:
+     region:
+      ids: []
+    outputs:
+     performance: [ipf, reweighting, drawing]
+     weights:
+      export: True
+      collate_across_geos: False
+     summary:
+      region:
+       filename: summary_region.csv
+       filetype: csv
+      geo:
+       filename: summary_geo.csv
+       filetype: csv
+     synthetic_population:
+      housing:
+       filename: housing_synthetic.csv
+       filetype: csv
+      person:
+       filename: person_synthetic.csv
+       filetype: csv
+     multiway:
+      - variables: [hhltype]
+        filename: hhltype.csv
+        filetype: csv
+        entity: household
+	
+	"""
+
+    content = content.replace(
+            'ids: []',
+            'ids: ' +str(regions.values.tolist())
+    )
+    
+    content = content.replace(
+            'location: ',
+            'location: ' + context.config("popgen_input_path")
+    )
+	
+    with open("%s/configuration_generated.yaml" % context.config("popgen_input_path"), "w+") as f_write:
+        f_write.write(content)
+        
 def execute(context):
-    Counties = context.stage("county_names")
+    Counties = context.config("county_names")
     #scale factor for the population
     scale = 1
     OutputFolder = context.config("popgen_input_path")
@@ -471,3 +572,7 @@ def execute(context):
     puma_censis_relationship_census['sample_geo'] = puma_censis_relationship_census['sample_geo'].astype(int)
 
     puma_censis_relationship_census.to_csv(OutputFolder+"/geo_sample_mapping.csv",index=False)
+    
+    #### prepare the confgiuration file ####
+    create_configuration_file(context, PumaNums)    
+    
