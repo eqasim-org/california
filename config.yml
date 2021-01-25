@@ -1,0 +1,81 @@
+## Synthetic population pipeline for California
+## based on the synpp package
+
+# This is the path to a directory where the pipeline can store temporary data
+working_directory: /nas/balacm/California/cache_la
+
+# This section defines which parts of the pipeline should be run
+run:
+  #- data.spatial.zones
+  #- data.census.cleaned
+  #- data.osm.add_pt_variable
+  #- data.education.education_facilities
+  #- data.hts.cleaned
+  #- data.od.raw
+  #- synthesis.population.sampled
+  #- synthesis.population.matching
+  #- synthesis.population.trips
+  #- synthesis.population.spatial.by_person.primary_zones
+  #- synthesis.population.spatial.by_person.primary_locations
+  #- synthesis.population.spatial.by_person.secondary.locations
+  #- synthesis.output # To create the output population in the output_path (see below)
+  #- synthesis.population.spatial.locations
+  #- synthesis.population.sociodemographics
+  #- matsim.scenario.population
+  #- matsim.scenario.supply.gtfs_merger_sf
+  #- matsim.runtime.pt2matsim
+  #- matsim.scenario.supply.osm
+  #- matsim.scenario.supply.processed
+  #- synthesis.population.spatial.by_person.secondary.distance_distributions
+  #- synthesis.destinations
+  #- matsim.simulation.run
+  #- matsim.scenario.supply.gtfs
+  #- matsim.runtime.eqasim
+  - matsim.simulation.prepare
+  #- temp.cleaned
+  #- data.census.popgen_prepare
+  #- matsim.output # Uncomment, if you want to run the full simulation (you'll need Java for that)
+  #- analysis.analysis
+# Here the configuraiton of the pipeline starts
+config:
+  # Some general configuration
+  processes: 24
+
+  # Define sampling rate and random seed for the output population
+  sampling_rate: 1
+  random_seed: 1234
+
+  # define regions to be synthesized
+  region: "la"
+  #counties: [1.0, 13.0, 41.0, 55.0, 75.0, 81.0, 85.0, 95.0, 97.0] #San Francisco Bay Area
+  counties: [111.0, 37.0, 71.0, 65.0, 59.0] #Los Angeles
+  #counties: [73.0]
+  #county_names: ["Alameda","Contra Costa","Marin","Napa","San Francisco","San Mateo","Santa Clara","Solano","Sonoma"] #San Francisco Bay Area
+  county_names: ["Los Angeles", "Orange", "Ventura", "Riverside", "San Bernardino"] #Los Angeles
+  #county_names: ["San Diego"]
+  #zones: ['001', '075', '085', '081', '095', '097', '013', '041', '055'] #San Francisco Bay Area
+  zones: ['111', '037', '071', '065', '059'] #Los Angeles
+  #zones: ['073'] #San Diego
+  minimum_source_samples: 4
+  spatial_file: "tl_2017_06_tract_cleaned_v2.shp" 
+  #spatial_file: "SF_Bay_Area_cleaned.shp" #San Francisco Bay Area
+  spatial_imputation_file: "SF_InnerCity.shp" #San Francisco Bay Area
+
+  osm_file: "la5counties.osm.pbf"
+  #osm_file: "sf_bay.osm.pbf" #San Francisco Bay Area
+  #osm_file_pt2matsim: "sf_bay.osm.gz" #San Francisco Bay Area
+  osm_file_pt2matsim: "la5counties.osm.gz" #Los Angeles
+
+  #eqasim_java_package: "san_francisco" #San Francisco Bay Area
+  eqasim_java_package: "los_angeles" #Los ANgeles
+  
+  # Paths to the input data and where the output should be stored
+  data_path: /nas/balacm/California/Data/LA
+  output_path: /nas/balacm/California/output/LA
+  popgen_input_path: /nas/balacm/California/Data/LA/PopGen
+
+  # Only interesting if you run the simulation
+  java_memory: 150G
+
+  # Only interesting if the analysis script is run
+  analysis_path: /nas/balacm/California/Analysis/LA
