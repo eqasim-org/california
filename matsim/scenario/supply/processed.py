@@ -60,6 +60,15 @@ def execute(context):
             '<param name="modesToKeepOnCleanUp" value="car" />',
             '<param name="modesToKeepOnCleanUp" value="car,car_passenger,truck,taxi" />'
         )
+        content = content.replace(
+            '<param name="maxLinkCandidateDistance" value="90.0" />',
+            '<param name="maxLinkCandidateDistance" value="300.0" />'
+        )
+        
+        content = content.replace(
+            '<param name="networkModes" value="car,bus" />',
+            '<param name="networkModes" value="bus" />'
+        )
 
         with open("%s/config.xml" % context.path(), "w+") as f_write:
             f_write.write(content)

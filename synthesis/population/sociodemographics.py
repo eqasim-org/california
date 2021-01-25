@@ -19,7 +19,7 @@ def execute(context):
         "person_id", "household_id",
         "age", "sex", "employment", "number_of_vehicles",
         "census_person_id", "household_size",
-        "zone_id", "income", "sf_home"
+        "zone_id", "income", "home_region"
     ]]
 
     df_hts = df_hts[[

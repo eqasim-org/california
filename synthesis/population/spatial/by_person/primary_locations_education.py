@@ -144,15 +144,16 @@ def execute(context):
     
     df_candidates = df_education_locations.copy()
     df_candidates = df_candidates[(df_candidates["type"]=='ELEM') | (df_candidates["type"]=='PS') | (df_candidates["type"]=='ELEMHIGH')]
-    educ_0_10 = parallelize_dataframe(hts_trips_educ, df_agents, df_candidates, df_trips, 0,  10, 1, "/nas/balacm/educ016.png", impute_education_locations_same_zone, 24)
+    educ_0_10 = parallelize_dataframe(hts_trips_educ, df_agents, df_candidates, df_trips, 0,  10, 1, "/nas/balacm/educ016.png", impute_education_locations_same_zone, 6)
 
     df_candidates = df_education_locations.copy()
     df_candidates = df_candidates[(df_candidates["type"]=='ELEMHIGH') | (df_candidates["type"]=='HS') | (df_candidates["type"]=='INTMIDJR')]
-    educ_11_18 = parallelize_dataframe(hts_trips_educ, df_agents, df_candidates, df_trips, 10,  18, 1, "/nas/balacm/educ016.png", impute_education_locations_same_zone, 24)
+    educ_11_18 = parallelize_dataframe(hts_trips_educ, df_agents, df_candidates, df_trips, 10,  18, 1, "/nas/balacm/educ016.png", impute_education_locations_same_zone, 6)
 
     df_candidates = df_education_locations.copy()
     df_candidates = df_candidates[(df_candidates["type"]=='college')]
-    educ_19_100 = parallelize_dataframe(hts_trips_educ, df_agents, df_candidates, df_trips, 18,  100, 2, "/nas/balacm/educ16100.png",impute_education_locations_same_zone, 24)
+
+    educ_19_100 = parallelize_dataframe(hts_trips_educ, df_agents, df_candidates, df_trips, 18,  100, 2, "/nas/balacm/educ16100.png",impute_education_locations_same_zone, 6)
 
     education_locations = pd.concat([educ_0_10, educ_11_18, educ_19_100])   
     df_education = education_locations[["person_id", "x", "y", "location_id"]]

@@ -74,15 +74,15 @@ def execute(context):
     #df_target["car_availability_class"] = df_target["binary_car_availability"]
     #df_source["car_availability_class"] = df_source["has_car_trip"]
     
-    df_source = df_source[["person_id", "age_class_hts", "sex", "number_of_vehicles_class", "employment", "weight", "sf_home", "pt_accessible"]]
-    
+    df_source = df_source[["person_id", "age_class_hts", "sex", "number_of_vehicles_class", "employment", "weight", "home_region", "pt_accessible"]]
+
     synthesis.population.algo.hot_deck_matching.run(
         df_target, "person_id",
         df_source, "person_id",
         "weight",
         #["age_class", "sex", "binary_car_availability"], #, "married"], MARRIED only available for ENTD, not EGT ?
         #["employment", "income_class"], #["household_size_class", "zone_au_simple", "income_class_simple", "number_of_vehicles_class"],
-        ["age_class_hts", "sex", "employment"],["number_of_vehicles_class", "pt_accessible", "sf_home"], #, "married"], MARRIED only available for ENTD, not EGT ?
+        ["age_class_hts", "sex", "employment"],["number_of_vehicles_class", "pt_accessible", "home_region"], #, "married"], MARRIED only available for ENTD, not EGT ?
         #["employment"], ["household_size_class", "zone_au_simple", "income_class_simple", "number_of_vehicles_class"],
         runners = number_of_threads,
         minimum_source_samples = context.config("minimum_source_samples") # MINIMUM_SOURCE_SAMPLES

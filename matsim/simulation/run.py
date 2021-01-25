@@ -8,6 +8,7 @@ def configure(context):
 
     context.stage("matsim.runtime.java")
     context.stage("matsim.runtime.eqasim")
+    context.config("eqasim_java_package")
 
 def execute(context):
     config_path = "%s/%s" % (
@@ -34,7 +35,7 @@ def execute(context):
     #
     #])
     
-    eqasim.run(context, "org.eqasim.san_francisco.RunSimulation", [
+    eqasim.run(context, "org.eqasim.%s.RunSimulation" % context.config("eqasim_java_package"), [
         "--config-path", config_path,
         "--config:controler.lastIteration", str(30),
         "--config:controler.writeEventsInterval", str(10),

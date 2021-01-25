@@ -6,12 +6,12 @@ def configure(context):
     context.stage("data.osm.add_pt_variable")
     context.config("data_path")
     context.config("counties")
+    context.config("region")
     
 def execute(context):
 	
     #we should make this configurable
-    counties = context.config("counties")#[1.0, 13.0, 41.0, 55.0, 75.0, 81.0, 85.0, 95.0, 97.0]
-    #counties = [73.0]
+    counties = context.config("counties")
     daysToKeep = ['Tuesday', 'Wednesday', 'Thursday']
 
     ##we are defining priorties for each mode for mode imputation for trips with transfers
@@ -430,15 +430,25 @@ def execute(context):
     df_persons["binary_car_availability"] = df_persons["vehicle_count"] > 0
     df_persons["binary_bike_availability"] = df_persons["bike_count"] > 0
 
-    df_persons["sf_home"] = df_persons["home_county_id"]==75
+    if (context.config("region") == "la"):
+        df_persons["home_region"] = 0    
+        df_persons.loc[df_persons["home_county_id"]==37, "home_region"] = 1
+        df_persons.loc[df_persons["home_county_id"]==71, "home_region"] = 2
+        df_persons.loc[df_persons["home_county_id"]==59, "home_region"] = 3
+        df_persons.loc[df_persons["home_county_id"]==65, "home_region"] = 4
+        df_persons.loc[df_persons["home_county_id"]==111, "home_region"] = 5
+    elif (context.config("region") == "sf"):
+        df_persons["home_region"] = df_persons["home_county_id"]==75    
+        df_persons.loc[df_persons["home_region"]== True, "home_region"] = 1
+        df_persons.loc[df_persons["home_region"] == False, "home_region"] = 0
+    else:
+    	raise Exception("This region name (%s) is not supported, Try one of the following [sf, la]" % context.config("region"))
     
-    df_persons.loc[df_persons["sf_home"]== True, "sf_home"] = 1
-    df_persons.loc[df_persons["sf_home"] == False, "sf_home"] = 0
     # Clean up
     df_persons = df_persons[[
         "person_id", "weight", "age_class_hts",
         "sex", "employment", "binary_car_availability", "binary_bike_availability",
-        "number_of_vehicles", "number_of_bikes", "has_license", "has_pt_subscription", "sf_home", "pt_accessible", "income", "home_county_id"        
+        "number_of_vehicles", "number_of_bikes", "has_license", "has_pt_subscription", "home_region", "pt_accessible", "income", "home_county_id"        
     ]]
 
     # Trips
@@ -470,10 +480,10 @@ def execute(context):
     df_trips.loc[df_trips["__mode"] == "car", "mode"] = "car"
     df_trips.loc[df_trips["__mode"] == "walk", "mode"] = "walk"
     #normal
-    df_trips.loc[df_trips["__mode"] == "bike", "mode"] = "bike"
+    df_trips.loc[df_trips["__mode"] == "bike", "mode"] = "walk"
     #San Diego
     if (len(context.config("counties")) < 3):
-        df_trips.loc[df_trips["__mode"] == "bike", "mode"] = "walk"
+        df_trips.loc[df_trips["__mode"] == "bike", "mode"] = "bike"
     df_trips.loc[df_trips["__mode"] == "pt", "mode"] = "pt"
     df_trips.loc[df_trips["__mode"] == "taxi", "mode"] = "pt"
 
@@ -530,9 +540,6 @@ def execute(context):
     #existing_ids = set(np.unique(df_persons["person_id"])) & set(np.unique(df_trips["person_id"]))
     #df_persons = df_persons[df_persons["person_id"].isin(existing_ids)]
     #df_trips = df_trips[df_trips["person_id"].isin(existing_ids)]
-
-
-    #### From here everything as Paris   
     
     # Contains car
     car_person_ids = df_trips[df_trips["mode"] == "car"]["person_id"].drop_duplicates()

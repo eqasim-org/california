@@ -128,11 +128,12 @@ def execute(context):
     df_home = pd.merge(df_hhl, df_home, on = ["household_id"], how = "left")
     del df_home["zone_id"]
     df_home = pd.merge(df_home, df_households[["person_id", "household_id"]], on = ["person_id", "household_id"], how = 'left')
+    print(len(df_home))
+
     print("Imputing work locations ...")
     df_households =  context.stage("synthesis.population.spatial.by_person.primary_zones")[0].copy()
-    print(df_households.columns)
     df_work_zones =  context.stage("synthesis.population.spatial.by_person.primary_zones")[1].copy()
-    print(df_work_zones.columns)
+    print(df_work_zones)
     df_hw =  pd.merge(df_work_zones.rename(columns = {"zone_id":"work_id"}) , df_households.rename(columns = {"zone_id":"home_id"}), on=["person_id"], how='left')
     
     df_work_zones = pd.merge(df_hw, df_commute)

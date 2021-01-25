@@ -5,7 +5,7 @@ import matsim.runtime.pt2matsim as pt2matsim
 def configure(context):
     context.stage("matsim.runtime.java")
     context.stage("matsim.runtime.pt2matsim")
-
+    context.config("osm_file_pt2matsim")
     context.config("data_path")
 
 def execute(context):
@@ -26,7 +26,7 @@ def execute(context):
 		<param name="keepWaysWithPublicTransit" value="true" />
 		<param name="maxLinkLength" value="1500.0" />
 		<!-- The path to the osm file. -->
-		<param name="osmFile" value="/nas/balacm/California/Data/osm/sf_bay.osm.gz" />
+		<param name="osmFile" value="/nas/balacm/California/Data/LA/osm/la5counties.osm.gz" />
 		<param name="outputCoordinateSystem" value="EPSG:2227" />
 		<param name="outputNetworkFile" value="network.xml.gz" />
 		<!-- In case the speed limit allowed does not represent the speed a vehicle can actually realize, e.g. by constrains of
@@ -34,15 +34,23 @@ def execute(context):
 		Defaults to false. Set true to scale the speed limit down by the value specified by the wayDefaultParams) -->
 		<param name="scaleMaxSpeed" value="false" />
 		<parameterset type="routableSubnetwork" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="subnetworkMode" value="car" />
 		</parameterset>
 		<parameterset type="routableSubnetwork" >
-			<param name="allowedTransportModes" value="bus,car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
+			<param name="subnetworkMode" value="car_passenger" />
+		</parameterset>
+		<parameterset type="routableSubnetwork" >
+			<param name="allowedTransportModes" value="car" />
+			<param name="subnetworkMode" value="taxi" />
+		</parameterset>
+		<parameterset type="routableSubnetwork" >
+			<param name="allowedTransportModes" value="bus" />
 			<param name="subnetworkMode" value="bus" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="95.3333" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="1800.0" />
@@ -52,7 +60,7 @@ def execute(context):
 			<param name="osmValue" value="motorway" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="51.55" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="1500.0" />
@@ -62,7 +70,7 @@ def execute(context):
 			<param name="osmValue" value="motorway_link" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="80" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="2000.0" />
@@ -72,7 +80,7 @@ def execute(context):
 			<param name="osmValue" value="trunk" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="51" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="1500.0" />
@@ -82,7 +90,7 @@ def execute(context):
 			<param name="osmValue" value="trunk_link" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="73.5555" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="1500.0" />
@@ -92,7 +100,7 @@ def execute(context):
 			<param name="osmValue" value="primary" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="51" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="1500.0" />
@@ -102,7 +110,7 @@ def execute(context):
 			<param name="osmValue" value="primary_link" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="51" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="1100.0" />
@@ -112,7 +120,7 @@ def execute(context):
 			<param name="osmValue" value="secondary" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="51" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="1100.0" />
@@ -122,7 +130,7 @@ def execute(context):
 			<param name="osmValue" value="secondary_link" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="44" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="800.0" />
@@ -132,7 +140,7 @@ def execute(context):
 			<param name="osmValue" value="tertiary" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="44" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="800.0" />
@@ -142,7 +150,7 @@ def execute(context):
 			<param name="osmValue" value="tertiary_link" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="36" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="600.0" />
@@ -152,7 +160,7 @@ def execute(context):
 			<param name="osmValue" value="minor" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="36" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="600.0" />
@@ -162,7 +170,7 @@ def execute(context):
 			<param name="osmValue" value="unclassified" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="36" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="600.0" />
@@ -172,7 +180,7 @@ def execute(context):
 			<param name="osmValue" value="residential" />
 		</parameterset>
 		<parameterset type="wayDefaultParams" >
-			<param name="allowedTransportModes" value="car,car_passenger,taxi" />
+			<param name="allowedTransportModes" value="car" />
 			<param name="freespeed" value="29" />
 			<param name="freespeedFactor" value="1.0" />
 			<param name="laneCapacity" value="600.0" />
@@ -215,7 +223,10 @@ def execute(context):
 
     </config>
     """
-
+    pt2matsim.run(context, "org.matsim.pt2matsim.run.CreateDefaultOsmConfig", [
+        "config_template.xml"
+    ])
+    
 
     with open("%s/config.xml" % context.path(), "w+") as f_write:
         f_write.write(content)
@@ -228,7 +239,7 @@ def execute(context):
     return "network.xml.gz"
 
 def validate(context):
-    if not os.path.exists("%s/osm/sf_bay.osm.gz" % context.config("data_path")):
+    if not os.path.exists("%s/osm/%s" % (context.config("data_path"), context.config("osm_file_pt2matsim"))):
         raise RuntimeError("OSM data is not available")
 
-    return os.path.getsize("%s/osm/sf_bay.osm.gz" % context.config("data_path"))
+    return os.path.getsize("%s/osm/%s" % (context.config("data_path"), context.config("osm_file_pt2matsim")))

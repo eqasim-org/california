@@ -12,13 +12,14 @@ def configure(context):
     context.stage("synthesis.population.activities")
     context.stage("synthesis.population.spatial.locations")
     context.stage("synthesis.population.trips")
+    context.config("region")
 
 PERSON_FIELDS = [
     "person_id", "income", "car_availability", "bike_availability",
     "census_person_id", "household_id",
     "has_license", "has_pt_subscription", "is_passenger",
     "hts_person_id", 
-    "age", "employment", "sex", "sf_home"
+    "age", "employment", "sex", "home_region"
 ]
 
 ACTIVITY_FIELDS = [
@@ -40,8 +41,6 @@ def add_person(writer, person, activities, trips):
     writer.add_attribute("bikeAvailability", "java.lang.String", person[PERSON_FIELDS.index("bike_availability")])
 
     writer.add_attribute("censusPersonId", "java.lang.Long", person[PERSON_FIELDS.index("census_person_id")])
-
-    writer.add_attribute("city", "java.lang.Boolean", person[PERSON_FIELDS.index("sf_home")])
 
     writer.add_attribute("htsPersonId", "java.lang.String", person[PERSON_FIELDS.index("hts_person_id")])
 
