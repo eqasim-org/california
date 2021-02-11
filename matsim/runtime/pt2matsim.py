@@ -10,7 +10,7 @@ def configure(context):
     context.stage("matsim.runtime.java")
     context.stage("matsim.runtime.maven")
 
-    context.config("pt2matsim_version", "20.11")
+    context.config("pt2matsim_version", "21.1")
 
 def run(context, command, arguments):
     version = context.config("pt2matsim_version")
@@ -29,7 +29,7 @@ def execute(context):
     # Clone repository and checkout version
     git.run(context, [
         "clone", "https://github.com/matsim-org/pt2matsim.git",
-        "--branch", "fixOsmConfigLoader", #"v%s" % version,
+        "--branch", "v%s" % version,
         "--single-branch", "pt2matsim",
         "--depth", "1"
     ])
