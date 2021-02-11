@@ -49,13 +49,17 @@ to make adaptations, contributions or forks as long as you keep your code open
 as well!
 
 ## Built scenarios
-In case you want to use the synthetic demand directly without building them yourself, already built scenarios exist for Los Angeles, San Francisco and San Diego. Those can be found here:
+In case you want to use the synthetic travel demand directly without building them yourself, already built scenarios exist for Los Angeles, San Francisco and San Diego. Those can be found here:
 - [San Francisco]()
 - [Los Angeles]()
 - [San Diego]()
 
+Ready to use 1pct agent-based models can also be found here:
+- [San Francisco](https://polybox.ethz.ch/index.php/s/PuxYPFYdomIOGkN) and can be run with the RunSimulation class avaialble [here](https://github.com/eqasim-org/eqasim-java/blob/develop/san_francisco/src/main/java/org/eqasim/san_francisco/RunSimulation.java)
+- [Los Angeles](https://polybox.ethz.ch/index.php/s/FPHYnNn7hdrq9GL) and can be run with the SunSimulation class available [here](https://github.com/eqasim-org/eqasim-java/blob/develop/los_angeles/src/main/java/org/eqasim/los_angeles/RunSimulation.java)
+
 ## Publications
-- M. Balac and S. Hörl (2020) [Synthetic population for the state of California based on open-data: examples of San Francisco Bay area and San Diego County](), accepted for presentation at the 100th Annual Meeting of the Transportation ResearchBoard.
+- M. Balac and S. Hörl (2020) [Synthetic population for the state of California based on open-data: examples of San Francisco Bay area and San Diego County](https://www.researchgate.net/publication/349177186_Synthetic_population_for_the_state_of_California_based_on_open_data_Examples_of_the_San_Francisco_Bay_Area_and_San_Diego_County?_sg=ECrNv4QFH_5KZql4dflRlVSz0LgdLkTSzYI9-e4gNsgbeUkbrRCEMKyoLFyrUlchKkEvB79tIlRjhp1gLpmt9rTQZ-CbDl6o6fLEwIq7.a8M5mg06qzFW1ZGcHJ7zGzOgdjo-7not0S0V0T0lBuTrN4E8yDQqTLLa34JMukXJO3noNs3O6dWoHA-78sabiA), presented at the 100th Annual Meeting of the Transportation Research Board.
 - Hörl, S. and M. Balac (2020) [Reproducible scenarios for agent-based transport simulation: A case study for Paris and Île-de-France](https://www.researchgate.net/publication/341131284_Reproducible_scenarios_for_agent-based_transport_simulation_A_case_study_for_Paris_and_Ile-de-France), Preprint, IVT, ETH Zurich, Zurich.
 - Hörl, S., Balac, M. and Axhausen, K.W. (2019) [Dynamic demand estimation for an AMoD system in Paris](https://ieeexplore.ieee.org/document/8814051),
 paper presented at the 30th IEEE Intelligent Vehicles Symposium, Paris, June 2019.
