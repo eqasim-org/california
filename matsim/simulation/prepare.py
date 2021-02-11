@@ -20,6 +20,8 @@ def configure(context):
     context.config("data_path")
     context.config("eqasim_java_package")
     context.config("spatial_imputation_file")
+    context.config("spatial_imputation_file_la")
+    context.config("spatial_imputation_file_orange")
     context.config("region")
     
 def execute(context):
@@ -58,7 +60,7 @@ def execute(context):
 	            "--output-path", "prepared_population.xml.gz"
 	        ])
     elif (context.config("region") == "la"):
-        imputation_spatial_path = "%s/Spatial/LA_area_downtowns_2227_reduced2.shp" % context.config("data_path")
+        imputation_spatial_path = "%s/Spatial/%s" % (context.config("data_path"), context.config("spatial_imputation_file_la"))
         eqasim.run(context, "org.eqasim.%s.preparation.RunImputeInnerLAAttribute" % eqasim_java_package, [
 	            "--la-path", imputation_spatial_path,
 	            "--input-path", "prepared_population.xml.gz",
@@ -66,7 +68,7 @@ def execute(context):
 	            "--attribute-name", "city"
 	        ])
         
-        imputation_spatial_path = "%s/Spatial/Orange_County_2227.shp" % context.config("data_path")
+        imputation_spatial_path = "%s/Spatial/%s" % (context.config("data_path"), context.config("spatial_imputation_file_orange"))
         eqasim.run(context, "org.eqasim.%s.preparation.RunImputeInnerLAAttribute" % eqasim_java_package, [
 	            "--la-path", imputation_spatial_path,
 	            "--input-path", "prepared_population.xml.gz",
