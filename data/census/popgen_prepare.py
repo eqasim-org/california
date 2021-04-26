@@ -102,10 +102,10 @@ project:
        filetype: csv
      synthetic_population:
       housing:
-       filename: housing_synthetic.csv
+       filename: full_households.csv
        filetype: csv
       person:
-       filename: person_synthetic.csv
+       filename: full_population.csv
        filetype: csv
      multiway:
       - variables: [hhltype]
