@@ -26,7 +26,7 @@ def execute(context):
 		<param name="keepWaysWithPublicTransit" value="true" />
 		<param name="maxLinkLength" value="1500.0" />
 		<!-- The path to the osm file. -->
-		<param name="osmFile" value="/nas/balacm/California/Data/LA/osm/la5counties.osm.gz" />
+		<param name="osmFile" value="" />
 		<param name="outputCoordinateSystem" value="EPSG:2227" />
 		<param name="outputNetworkFile" value="network.xml.gz" />
 		<!-- In case the speed limit allowed does not represent the speed a vehicle can actually realize, e.g. by constrains of
@@ -227,6 +227,10 @@ def execute(context):
         "config_template.xml"
     ])
     
+    content = content.replace(
+            '<param name="osmFile" value="" />',
+            '<param name="osmFile" value="%s/osm/%s" />' % (context.config("data_path"), context.config("osm_file_pt2matsim")))
+    )
 
     with open("%s/config.xml" % context.path(), "w+") as f_write:
         f_write.write(content)
