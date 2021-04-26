@@ -11,7 +11,7 @@ def configure(context):
     context.stage("matsim.runtime.maven")
     context.config("eqasim_java_package")
 
-    context.config("eqasim_version", "1.2.0")
+    context.config("eqasim_version", "1.2.1")
 
 def run(context, command, arguments):
     version = context.config("eqasim_version")
