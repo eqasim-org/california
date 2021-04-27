@@ -70,38 +70,38 @@ The Census zoning system is available on different levels. However we use census
 
 - You can find them under resources folder for San Francisco Bay Area and Los Angeles Area. Please copy the files to `data/spatial` depending which area you want to work with.
 - The files provided here ensure that the studied area does not contain islands, as MATSim structure does not allow it. It also contains specific shapefiles (i.e., `SF_InnerCity`), which are used to impute specific attributes to the population.
-- All these files are created based on the zoning file, which can be obtained [here](https://www2.census.gov/geo/tiger/TIGER2017/TRACT/), file called `tl_2017_06_tract.zip`. These files are periodically updated, and currently the newest one is form 2019.
+- All these files are created based on the zoning file, which can be obtained [here](https://www2.census.gov/geo/tiger/TIGER2017/TRACT/), file called `tl_2017_06_tract.zip`. These files are periodically updated, and currently the newest one is from 2019.
 
 ### 6) Commuting data
 
+Commuting data is obtained from the Ammerican Community Survey (ACS). 
+- In the current pipeline we use `B302201` table for the census tract to census tract flows. Other tabulations can be used as well with some adaptations of the code.
+- The code also requires the documentation of the CTPP dataset, which can be obtained from the [ftp server](ftp:\\data5.ctpp.transportation.org)
+- The documentation should be unzipped and placed next to the `B302201` in the `data/CTPP` directory
 
-### 9) *(Optional)* Road network (OpenStreetMap)
+
+### 7) *(Optional)* Road network (OpenStreetMap)
 
 Only in case you want to run a full simulation of the scenario (rather than
 creating the synthetic population in itself), you need to use the sao-paulo osm data again:
 
 - The file you have created in step 3 unpack to .osm (you can do that using osmosis tool):
 ```
-osmosis --read-pbf file="sao_paulo.osm.pbf" --write-xml file="sao_paulo.osm"
+osmosis --read-pbf file="sf_bay.osm.pbf" --write-xml file="sf_bay.osm"
 ```
-- In order to save storage space, you should pack it to sao_paulo.osm.gz
+- In order to save storage space, you should pack it to sf_bay.osm.gz
 - Put the *gz* file into the folder `data/osm`.
 
-### 10) *(Optional)* Public transit schedule (GTFS)
+### 8) *(Optional)* Public transit schedule (GTFS)
 
 Again, only if you want to run a full simulation, you need to download the
-public transit schedule. It is available from two sources:
+public transit schedules. There are many transit agencies in the area and this process can be very time consuming:
 
-- [SPTRANS GTFS](http://transitfeeds.com/p/sptrans/1049)
-- Downlaod a zip file and rename it to sptrans.zip
-- Unfortuantely the second provider does not provide an open GTFS schedule and at the moment, and only
-the residents of Brasil can obtain it via this [link](http://www.emtu.sp.gov.br/emtu/dados-abertos/dados-abertos-principal/gtfs.fss)
-- Download the zip file, rename it to emtu.zip
-- Copy the *zip* files into the folder `data/gtfs`.
-Note: When working with multiple gtfs schedules you need to amke sure that they are coming
-from the same period of time, or in other words, they need to have an overlapping operations
-period. Therfore, if using a provided emtu.zip you would need to update the validity dates
-in calendar.txt in order to overlap with sptrans calendar.txt dates
+- You can get the transit agencies files from resources/sf/transit
+- Or alternatively you can download the current GTFS schedules and place them in the `data/gtfs` folder
+- If you choose to download current GTFS files you will need to adapt the gtfs_merger stage to take into account the number and namings of the gtfs files you have downlaoded
+- If you are using provided files, you do not ahve to do anything
+- 
 ### Overview
 
 Your folder structure should now have at least the following files:
