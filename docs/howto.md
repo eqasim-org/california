@@ -104,67 +104,64 @@ public transit schedules. There are many transit agencies in the area and this p
 - 
 ### Overview
 
-Your folder structure should now have at least the following files:
+Your folder structure should now have at least the following files for the San Francisco example:
 
-- `data/Census/Censo.2010.brasil.amostra.10porcento.sav`
-- `data/HTS/OD_2017.dbf`
-- `data/osm/sao_paulo.osm.pbf`
-- `data/escolas_enderecos.csv`
-- `data/Spatial/SC2010_RMSP_CEM_V3.cpg`
-- `data/Spatial/SC2010_RMSP_CEM_V3.shp`
-- `data/Spatial/SC2010_RMSP_CEM_V3.dbf`
-- `data/Spatial/SC2010_RMSP_CEM_V3.prj`
-- `data/Spatial/SC2010_RMSP_CEM_V3.shx`
-- `data/Spatial/SC2010_RMSP_CEM_V3_center.cpg`
-- `data/Spatial/SC2010_RMSP_CEM_V3_center.shp`
-- `data/Spatial/SC2010_RMSP_CEM_V3_center.dbf`
-- `data/Spatial/SC2010_RMSP_CEM_V3_center.prj`
-- `data/Spatial/SC2010_RMSP_CEM_V3_center.shx`
-- `data/Spatial/SC2010_RMSP_CEM_V3_city.cpg`
-- `data/Spatial/SC2010_RMSP_CEM_V3_city.shp`
-- `data/Spatial/SC2010_RMSP_CEM_V3_city.dbf`
-- `data/Spatial/SC2010_RMSP_CEM_V3_city.prj`
-- `data/Spatial/SC2010_RMSP_CEM_V3_city.shx`
-- `data/Spatial/SC2010_RMSP_CEM_V3_all_state.cpg`
-- `data/Spatial/SC2010_RMSP_CEM_V3_all_state.shp`
-- `data/Spatial/SC2010_RMSP_CEM_V3_all_state.dbf`
-- `data/Spatial/SC2010_RMSP_CEM_V3_all_state.prj`
-- `data/Spatial/SC2010_RMSP_CEM_V3_all_state.shx`
+- `data/CHTS/survey_person.csv`
+- `data/CHTS/survey_activity.csv`
+- `data/CHTS/survey_place.csv`
+- `data/CHTS/survey_households.csv`
+- `data/population/psam_p06.csv`
+- `data/population/psam_h06.csv`
+- `data/population/full_population.csv` after generating it with PopGen
+- `data/population/full_households.csv` after generating it with PopGen
+- `data/CTPP/CA_2012thru2016_B302201.csv`
+- `data/CTPP/2012-2016 CTPP documentation/*`
+- `data/education/pubschls.txt`
+- `data/education/Colleges_and_Universities.csv`
+- `data/Spatial/SF_InnerCity.cpg`
+- `data/Spatial/SF_InnerCity.shp`
+- `data/Spatial/SF_InnerCity.dbf`
+- `data/Spatial/SF_InnerCity.prj`
+- `data/Spatial/SF_InnerCity.shx`
+- `data/Spatial/SF_Bay_Area_cleaned.cpg`
+- `data/Spatial/SF_Bay_Area_cleaned.shp`
+- `data/Spatial/SF_Bay_Area_cleaned.dbf`
+- `data/Spatial/SF_Bay_Area_cleaned.prj`
+- `data/Spatial/SF_Bay_Area_cleaned.shx`
+- `data/osm/sf_bay.osm.pbf`
 
+If you want to run the simulation, there should be also the following files (similar if you want to build any other region in California):
 
-If you want to run the simulation, there should be also the following files:
-
-- `data/osm/sao_paulo.osm.gz`
-- `data/gtfs/emtu.zip`
-- `data/gtfs/sptrans.zip`
+- `data/osm/sf_bay.osm.gz` 
+- `data/gtfs/*`
 
 ## <a name="section-population">Running the pipeline
 
-The pipeline code is available in [this repository](https://github.com/eqasim-org/sao_paulo).
+The pipeline code is available in [this repository](https://github.com/eqasim-org/california).
 To use the code, you have to clone the repository with `git`:
 
 ```bash
-git clone https://github.com/eqasim-org/sao_paulo
+git clone https://github.com/eqasim-org/california
 ```
 
-which will create the `sao_paulo` folder containing the pipeline code. To
+which will create the `california` folder containing the pipeline code. To
 set up all dependencies, especially the [synpp](https://github.com/eqasim-org/synpp) package,
 which is the code of the pipeline code, we recommend setting up a Python
 environment using [Anaconda](https://www.anaconda.com/):
 
 ```bash
-cd sao_paulo
+cd california
 conda env create -f environment.yml
 ```
 
-This will create a new Anaconda environment with the name `sao_paulo`. (In
+This will create a new Anaconda environment with the name `california`. (In
 case you don't want to use Anaconda, we also provide a `requirements.txt` to
 install all dependencies in a `virtualenv` using `pip install -r requirements.txt`).
 
 To activate the environment, run:
 
 ```bash
-conda activate sao_paulo
+conda activate california
 ```
 
 Now have a look at `config.yml` which is the configuration of the pipeline.
@@ -238,23 +235,40 @@ Then, open again `config.yml` and uncomment the `matsim.output` stage in the
 already which stages have been running before, so it will only run additional
 stages that are needed to set up and test the simulation.
 
+You can choose currently between two possible runnable scenarios: los_angeles and san_francisco.
+In the config.yml file you can choose one or the other using the eqasim_java_package parameters.
+`eqasim_java_package: "san_francisco"` will run a San Francisco scenario using the
+eqasim framework.
+
+There are several other parameters that can be configured within the config.yml file:
+- You can define for which counties you want to create the population; you have to define `counties` containing county IDs and `county_names`, containing their names
+- You also have to define `zones` which contain three digit county codes
+- `minimum_source_samples` is used int eh hot deck matching algorithm when activity chains are assigned to individuals
+- `spatial_file` represents the census tracts that are contained within the area that you want to synthesize
+- `spatial_imputation_file`, `spatial_imputation_file_la`, and `spatial_imputation_file_orange` are used for imputation of specific attributes that are used in the synthesize process
+- `osm_file` can be used to define the name of the OSM file used in the synthesize process
+- `osm_file_pt2matsim` can be used to define the file used in pt2matsim stage where the MATSim scenario is set up
+- `data_path` is used to define the path to the `data` folder
+- `output_path` is used to define the path to the output folder
+- `popgen_input_path` is used to define the path to the folder where popgen stage input and output files are stored
+
 After running, you should find the MATSim scenario files in the `output`
 folder:
 
-- `sao_paulo_population.xml.gz` containing the agents and their daily plans.
-- `sao_paulo_facilities.xml.gz` containing all businesses, services, etc.
-- `sao_paulo_network.xml.gz` containing the road and transit network
-- `sao_paulo_households.xml.gz` containing additional household information
-- `sao_paulo_transit_schedule.xml.gz` and `sao_paulo_transit_vehicles.xml.gz` containing public transport data
-- `sao_paulo_config.xml` containing the MATSim configuration values
-- `sao_paulo-1.2.0.jar` containing a fully packaged version of the simulation code including MATSim and all other dependencies
+- `san_francisco_population.xml.gz` containing the agents and their daily plans.
+- `san_francisco_facilities.xml.gz` containing all businesses, services, etc.
+- `san_francisco_network.xml.gz` containing the road and transit network
+- `san_francisco_households.xml.gz` containing additional household information
+- `san_francisco_transit_schedule.xml.gz` and `san_francisco_transit_vehicles.xml.gz` containing public transport data
+- `san_francisco_config.xml` containing the MATSim configuration values
+- `san_francisco-1.2.1.jar` containing a fully packaged version of the simulation code including MATSim and all other dependencies
 
 If you want to run the simulation again (in the pipeline it is only run for
 two iterations to test that everything works), you can now call the following:
 
 ```bash
-java -Xmx14G -cp sao_paulo-1.2.0.jar org.eqasim.sao_paulo.RunSimulation --config-path sao_paulo_config.xml
+java -Xmx14G -cp san_francisco-1.2.1.jar org.eqasim.san_francisco.RunSimulation --config-path san_francisco_config.xml
 ```
 
-This will create a `simulation_output` folder (as defined in the `sao_paulo_config.xml`)
+This will create a `simulation_output` folder (as defined in the `san_francisco_config.xml`)
 where all simulation is written.
