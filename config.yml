@@ -2,7 +2,7 @@
 ## based on the synpp package
 
 # This is the path to a directory where the pipeline can store temporary data
-working_directory: /nas/balacm/California/cache_sf_100pct_micromobility
+working_directory: /nas/balacm/California/cache_sf_1pct_test
 
 # This section defines which parts of the pipeline should be run
 run:
@@ -18,7 +18,7 @@ run:
   #- synthesis.population.spatial.by_person.primary_zones
   #- synthesis.population.spatial.by_person.primary_locations
   #- synthesis.population.spatial.by_person.secondary.locations
-  #- synthesis.output # To create the output population in the output_path (see below)
+  - synthesis.output # To create the output population in the output_path (see below)
   #- synthesis.population.spatial.locations
   #- synthesis.population.sociodemographics
   #- matsim.scenario.population
@@ -30,7 +30,7 @@ run:
   #- synthesis.destinations
   #- matsim.simulation.run
   #- matsim.scenario.supply.gtfs
-  - matsim.runtime.eqasim
+  #- matsim.runtime.eqasim
   - matsim.simulation.prepare
   #- temp.cleaned
   #- data.census.popgen_prepare
@@ -42,7 +42,7 @@ config:
   processes: 24
 
   # Define sampling rate and random seed for the output population
-  sampling_rate: 1.0
+  sampling_rate: 0.01
   random_seed: 1234
 
   # define regions to be synthesized
@@ -73,7 +73,7 @@ config:
   
   # Paths to the input data and where the output should be stored
   data_path: /nas/balacm/California/Data/SF
-  output_path: /nas/balacm/California/output/SF/100pct
+  output_path: /nas/balacm/California/output/SF/1pct
   popgen_input_path: /nas/balacm/California/Data/SF/PopGen
 
   # Only interesting if you run the simulation
