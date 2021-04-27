@@ -52,7 +52,7 @@ The OpenStreetMap data is avaialble from Geofabrik:
 - Now you need to cut-out the region you want to study. 
 This can be easily done using a tool called [osmosis](https://github.com/openstreetmap/osmosis). Download the latest build and follow
 the installation instructions. You would need a polygon 
-file describing the boundaries of the region, which you can find also [here](../resources); sf.poly is provided as example how this should look like for San Francisco nine-county area. 
+file describing the boundaries of the region, which you can find also [here](../resources/SF/Spatial); sf.poly is provided as example how this should look like for San Francisco nine-county area. 
 - The following command using osmosis can be used to cut-out a San Francisco region:
 ```
 osmosis --read-pbf file="norcal-latest.osm.pbf" --bounding-polygon file="ss.poly" --write-pbf file="sf_bay.osm.pbf"
