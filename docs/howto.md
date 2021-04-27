@@ -17,7 +17,7 @@ to start with an empty folder, e.g. `/data`. All data sets need to be named
 in a specific way and put into specific sub-directories. The following paragraphs
 describe this process.
 
-The main file used to configure the pipeline is called `config.yaml`.
+The main file used to configure the pipeline is called `config.yml`.
 
 ### 1) Census data (Censo 2010)
 
@@ -29,8 +29,10 @@ USA is available through the USA Census:
 - To create a representative set of individuals and households characterized with certain attributes we use PopGen as an example framework
 - The `data/census/prepare_popgen.py` stage creates the input PopGen files that you can use to generate the necessary files for later stages of the pipeline
 - As an input to this stage you will need PUMS dataset, which can be obtained form [here](https://www2.census.gov/programs-surveys/acs/data/pums/). You can downloaded the latest 5-year estimates for California. Currently located [here](https://www2.census.gov/programs-surveys/acs/data/pums/2019/5-Year/)
-- You need to download two zip files: `csv_hca.zip` and `csv_pca.zip` containing houshold and population samples, and unzip them in the `popgen_input_path` which you can deifne within the `config.yaml` file
+- You need to download two zip files: `csv_hca.zip` and `csv_pca.zip` containing houshold and population samples, and unzip them in the `popgen_input_path` which you can deifne within the `config.yml` file. These two files are called `psam_p06.csv` and `psam_h06.csv`
 - The PopGen will create two files: `full_population.csv` and `full_households.csv`. You need to place these files in the right folder under `/data/census`
+- PopGen v2.0 can be obtained from [here](https://www.mobilityanalytics.org/popgen.html). Unfortunately, the tool is a bit old and only works with Python 2. We advise setting up an environment with Python 2 to be able to execute this stage. 
+- An alternative to using PopGen is to replace data/census/prepare_popgen and data/census/cleaned stages with the [PopulationSim](https://activitysim.github.io/populationsim/). However, we have not tested this approach yet.
 
 ### 2) California household travel survey 
 
