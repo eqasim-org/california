@@ -230,7 +230,6 @@ def execute(context):
     content = content.replace(
             '<param name="osmFile" value="" />',
             '<param name="osmFile" value="%s/osm/%s" />' % (context.config("data_path"), context.config("osm_file_pt2matsim")))
-    )
 
     with open("%s/config.xml" % context.path(), "w+") as f_write:
         f_write.write(content)
