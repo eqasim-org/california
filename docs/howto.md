@@ -1,6 +1,3 @@
-# Contents
-[[_TOC_]]
-
 # How to create a scenario
 
 The following sections describe three steps of using the pipeline. To generate
@@ -34,10 +31,10 @@ USA is available through the USA Census:
 - As an input to this stage you will need PUMS dataset, which can be obtained form [here](https://www2.census.gov/programs-surveys/acs/data/pums/). You can downloaded the latest 5-year estimates for California. Currently located [here](https://www2.census.gov/programs-surveys/acs/data/pums/2019/5-Year/)
 - You need to download two zip files: `csv_hca.zip` and `csv_pca.zip` containing houshold and population samples, and unzip them in the `popgen_input_path` which you can deifne within the `config.yml` file. These two files are called `psam_p06.csv` and `psam_h06.csv`
 - The PopGen will create two files: `full_population.csv` and `full_households.csv`. You need to place these files in the right folder under `/data/census`
-- PopGen v2.0 can be obtained from [here](https://www.mobilityanalytics.org/popgen.html). Unfortunately, the tool is a bit old and only works with Python 2. We advise setting up an environment with Python 2 to be able to execute this stage.
+- PopGen v2.0 can be obtained from [here](https://www.mobilityanalytics.org/popgen.html). Unfortunately, the tool is a bit old and only works with Python 2. We advise setting up an environment with Python 2 to be able to execute this stage. 
 - An alternative to using PopGen is to replace data/census/prepare_popgen and data/census/cleaned stages with the [PopulationSim](https://activitysim.github.io/populationsim/). However, we have not tested this approach yet.
 
-### 2) California household travel survey
+### 2) California household travel survey 
 
 The California household travel survey is available from NREL:
 
@@ -52,10 +49,10 @@ The OpenStreetMap data is avaialble from Geofabrik:
 - Here you can find [North California OSM](http://download.geofabrik.de/north-america/us/california/norcal.html) data
 - Here you can find [South California OSM](http://download.geofabrik.de/north-america/us/california/socal.html) data
 - Download the norcal-latest.osm.pbf (or socal-latest.osm.pbf) file
-- Now you need to cut-out the region you want to study.
+- Now you need to cut-out the region you want to study. 
 This can be easily done using a tool called [osmosis](https://github.com/openstreetmap/osmosis). Download the latest build and follow
-the installation instructions. You would need a polygon
-file describing the boundaries of the region, which you can find also [here](../resources/SF/Spatial); sf.poly is provided as example how this should look like for San Francisco nine-county area.
+the installation instructions. You would need a polygon 
+file describing the boundaries of the region, which you can find also [here](../resources/SF/Spatial); sf.poly is provided as example how this should look like for San Francisco nine-county area. 
 - The following command using osmosis can be used to cut-out a San Francisco region:
 ```
 osmosis --read-pbf file="norcal-latest.osm.pbf" --bounding-polygon file="ss.poly" --write-pbf file="sf_bay.osm.pbf"
@@ -79,7 +76,7 @@ The Census zoning system is available on different levels. However we use census
 
 ### 6) Commuting data
 
-Commuting data is obtained from the Ammerican Community Survey (ACS).
+Commuting data is obtained from the Ammerican Community Survey (ACS). 
 - In the current pipeline we use `B302201` table for the census tract to census tract flows. Other tabulations can be used as well with some adaptations of the code.
 - The code also requires the documentation of the CTPP dataset, which can be obtained from the [ftp server](ftp:\\data5.ctpp.transportation.org)
 - The documentation should be unzipped and placed next to the `B302201` in the `data/CTPP` directory
@@ -106,7 +103,7 @@ public transit schedules. There are many transit agencies in the area and this p
 - Or alternatively you can download the current GTFS schedules and place them in the `data/gtfs` folder
 - If you choose to download current GTFS files you will need to adapt the gtfs_merger stage to take into account the number and namings of the gtfs files you have downlaoded
 - If you are using provided files, you do not ahve to do anything
--
+- 
 ### Overview
 
 Your folder structure should now have at least the following files for the San Francisco example:
@@ -137,7 +134,7 @@ Your folder structure should now have at least the following files for the San F
 
 If you want to run the simulation, there should be also the following files (similar if you want to build any other region in California):
 
-- `data/osm/sf_bay.osm.gz`
+- `data/osm/sf_bay.osm.gz` 
 - `data/gtfs/*`
 
 ## <a name="section-population">Running the pipeline
