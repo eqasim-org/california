@@ -1,5 +1,6 @@
 import pandas as pd
 import subprocess as sp
+import os.path
 
 def configure(context):
     context.config("data_path")
