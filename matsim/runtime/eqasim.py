@@ -11,7 +11,7 @@ def configure(context):
     context.stage("matsim.runtime.maven")
     context.config("eqasim_java_package")
 
-    context.config("eqasim_version", "1.5.0")
+    context.config("eqasim_version")
 
 def run(context, command, arguments):
     version = context.config("eqasim_version")
@@ -40,7 +40,7 @@ def execute(context):
         "fetch", "--tags"
     ], cwd=f"{context.path()}/{REPO_DIR}")
     git.run(context, [
-        "checkout", context.path("eqasim_version")
+        "checkout", f"v{version}"
     ], cwd=f"{context.path()}/{REPO_DIR}")
 
     # Build eqasim
